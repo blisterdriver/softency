@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Softency - High-Performance Web Engines for Growth</title>
+
+    <!-- FONT IMPORTS: General Sans (Headings) & Satoshi (Body) -->
+    <link
+      href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=general-sans@600,700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ------------------------- */
+      /* --- DESIGN SYSTEM & SETUP -- */
+      /* ------------------------- */
+      :root {
+        --bg-light: #f7f7f8;
+        --bg-dark: #0d1117;
+        --bg-dark-secondary: #161b22;
+        --accent: #3b82f6;
+        --accent-hover: #2563eb;
+        --accent-glow: rgba(59, 130, 246, 0.5);
+        --text-light-bg: #111827;
+        --text-light-bg-secondary: #6b7280;
+        --text-dark-bg: #e5e7f0;
+        --text-dark-bg-secondary: #9ca3af;
+        --border-light: #e5e7eb;
+        --border-dark: #30363d;
+        --card-light: #ffffff;
+
+        --font-display: "General Sans", sans-serif;
+        --font-body: "Satoshi", sans-serif;
+
+        --transition-fast: 0.2s cubic-bezier(0.215, 0.61, 0.355, 1);
+        --transition-medium: 0.4s cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+      }
+
+      body {
+        font-family: var(--font-body);
+        background-color: var(--bg-light);
+        color: var(--text-light-bg-secondary);
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+        overflow-x: hidden;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: var(--font-display);
+        font-weight: 700;
+        line-height: 1.2;
+        letter-spacing: -0.03em;
+      }
+
+      h1 {
+        font-size: clamp(3.25rem, 6vw, 5rem);
+      }
+      h2 {
+        font-size: clamp(2.25rem, 5vw, 3.25rem);
+      }
+      h3 {
+        font-size: 1.25rem;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 1248px;
+        margin: 0 auto;
+        padding: 0 24px;
+      }
+      section {
+        padding: 120px 0;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .section-heading {
+        text-align: center;
+        margin-bottom: 64px;
+        max-width: 750px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .section-heading h2 {
+        margin-bottom: 16px;
+      }
+      .section-heading p {
+        font-size: 1.125rem;
+      }
+
+      /* ------------------------- */
+      /* --- THEME VARIATIONS ---- */
+      /* ------------------------- */
+      .dark-section {
+        background-color: var(--bg-dark);
+        color: var(--text-dark-bg-secondary);
+      }
+      .dark-section h1,
+      .dark-section h2,
+      .dark-section h3,
+      .dark-section h4 {
+        color: var(--text-dark-bg);
+      }
+      .light-section h1,
+      .light-section h2,
+      .light-section h3,
+      .light-section h4 {
+        color: var(--text-light-bg);
+      }
+
+      /* ------------------------- */
+      /* --- BUTTONS & LINKS ----- */
+      /* ------------------------- */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 28px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 500;
+        font-family: var(--font-body);
+        transition: all var(--transition-fast);
+        border: 1px solid transparent;
+        font-size: 1rem;
+      }
+      .btn-primary {
+        background-color: var(--accent);
+        color: #fff;
+      }
+      .btn-primary:hover {
+        background-color: var(--accent-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px rgba(59, 130, 246, 0.2);
+      }
+      .btn-secondary-dark {
+        background-color: transparent;
+        color: var(--text-dark-bg);
+        border: 1px solid var(--border-dark);
+      }
+      .btn-secondary-dark:hover {
+        background-color: var(--bg-dark-secondary);
+        border-color: var(--text-dark-bg-secondary);
+      }
+
+      .btn svg {
+        transition: transform var(--transition-fast);
+      }
+      .btn:hover svg {
+        transform: translateX(4px);
+      }
+
+      /* ------------------------- */
+      /* --- HEADER & NAVIGATION - */
+      /* ------------------------- */
+      .header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        background-color: rgba(247, 247, 248, 0.6);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        padding: 18px 0;
+        transition: all var(--transition-medium);
+        border-bottom: 1px solid var(--border-light);
+      }
+      .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        font-family: var(--font-display);
+        font-size: 1.75rem;
+        font-weight: 700;
+        color: var(--text-light-bg);
+        text-decoration: none;
+      }
+      .nav-links {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        gap: 40px;
+      }
+      .nav-links a {
+        text-decoration: none;
+        color: var(--text-light-bg-secondary);
+        font-weight: 500;
+        transition: color var(--transition-fast);
+        font-size: 1rem;
+      }
+      .nav-links a:hover {
+        color: var(--text-light-bg);
+      }
+      .menu-toggle {
+        display: none;
+      }
+
+      /* ------------------------- */
+      /* ------- HERO SECTION ---- */
+      /* ------------------------- */
+      #hero {
+        padding-top: 220px;
+        padding-bottom: 160px;
+        text-align: center;
+      }
+      .hero-content h1 {
+        margin-bottom: 24px;
+      }
+      .hero-content .char {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(50px) scale(0.8) rotate(10deg);
+        transition: opacity 0.6s var(--transition-medium),
+          transform 0.6s var(--transition-medium);
+      }
+      .hero-content.visible .char {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotate(0deg);
+      }
+      .hero-content p {
+        font-size: 1.25rem;
+        margin: 0 auto 48px auto;
+        max-width: 680px;
+      }
+      .hero-ctas {
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+      }
+
+      /* ------------------------- */
+      /* -- SERVICES (BENTO GRID) -- */
+      /* ------------------------- */
+      .services-bento-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-auto-rows: minmax(220px, auto);
+        gap: 24px;
+      }
+      .service-card {
+        background-color: var(--bg-dark-secondary);
+        border: 1px solid var(--border-dark);
+        border-radius: 12px;
+        padding: 32px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+        overflow: hidden;
+        transition: transform var(--transition-fast);
+      }
+      .service-card:hover {
+        transform: translateY(-5px);
+      }
+      .service-card .icon {
+        color: var(--text-dark-bg);
+        margin-bottom: 16px;
+      }
+      .service-card h4 {
+        margin-bottom: 8px;
+      }
+      .service-card p {
+        font-size: 0.95rem;
+      }
+
+      .service-card:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+      .service-card:nth-child(2) {
+        grid-column: span 2;
+      }
+      .service-card:nth-child(6) {
+        grid-column: span 2;
+      }
+
+      /* INTERACTIVE GLOWING BORDER EFFECT */
+      .interactive-card {
+        position: relative;
+      }
+      .interactive-card::before,
+      .interactive-card::after {
+        content: "";
+        position: absolute;
+        left: -1px;
+        top: -1px;
+        background: radial-gradient(
+          circle at var(--mouse-x) var(--mouse-y),
+          var(--accent-glow),
+          transparent 40%
+        );
+        width: calc(100% + 2px);
+        height: calc(100% + 2px);
+        border-radius: inherit;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        z-index: -1;
+      }
+      .interactive-card:hover::before {
+        opacity: 1;
+      }
+
+      /* ------------------------- */
+      /* ---- FEATURE SECTIONS ---- */
+      /* ------------------------- */
+      .feature-item {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
+      .feature-item:nth-child(even) .feature-image {
+        grid-column: 1;
+        grid-row: 1;
+      }
+      .feature-item + .feature-item {
+        margin-top: 120px;
+      }
+      .feature-text h2 {
+        margin-bottom: 24px;
+      }
+      .feature-text p {
+        font-size: 1.125rem;
+      }
+      .feature-image img {
+        width: 100%;
+        border-radius: 12px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        border: 1px solid var(--border-light);
+      }
+      .dark-section .feature-image img {
+        border-color: var(--border-dark);
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      }
+
+      /* ------------------------- */
+      /* ----- PROCESS SECTION ----- */
+      /* ------------------------- */
+      .process-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1px;
+        background-color: var(--border-dark);
+        border: 1px solid var(--border-dark);
+        border-radius: 16px;
+        overflow: hidden;
+      }
+      .process-card {
+        background-color: var(--bg-dark-secondary);
+        padding: 32px;
+      }
+      .process-number {
+        font-size: 1.125rem;
+        font-weight: 700;
+        color: var(--accent);
+        margin-bottom: 16px;
+      }
+      .process-card h3 {
+        font-size: 1.125rem;
+        margin-bottom: 8px;
+      }
+
+      /* ------------------------- */
+      /* ------- TESTIMONIALS ------ */
+      /* ------------------------- */
+      .testimonial-slider {
+        max-width: 800px;
+        margin: 0 auto;
+        position: relative;
+        text-align: center;
+      }
+      .testimonial-slides {
+        position: relative;
+        width: 100%;
+        overflow: hidden;
+        min-height: 220px;
+      }
+      .testimonial-slide {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.5s ease-in-out;
+      }
+      .testimonial-slide.active {
+        position: relative;
+        opacity: 1;
+        visibility: visible;
+      }
+      .testimonial-slide p.quote {
+        font-size: 2rem;
+        font-family: var(--font-display);
+        font-weight: 600;
+        line-height: 1.4;
+        color: var(--text-light-bg);
+        margin-bottom: 32px;
+      }
+      .testimonial-author {
+        font-weight: 500;
+        color: var(--text-light-bg);
+      }
+      .testimonial-author span {
+        display: block;
+        font-weight: 400;
+        color: var(--text-light-bg-secondary);
+        font-size: 1rem;
+      }
+      .testimonial-nav {
+        margin-top: 40px;
+        display: flex;
+        justify-content: center;
+        gap: 16px;
+      }
+      .testimonial-nav button {
+        background: var(--card-light);
+        border: 1px solid var(--border-light);
+        border-radius: 50%;
+        width: 48px;
+        height: 48px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-light-bg);
+        transition: all var(--transition-fast);
+      }
+      .testimonial-nav button:hover {
+        background-color: #f0f0f1;
+        transform: scale(1.1);
+      }
+
+      /* ------------------------- */
+      /* --------- CTA & FOOTER ----- */
+      /* ------------------------- */
+      .cta-content {
+        text-align: center;
+        max-width: 700px;
+        margin: 0 auto;
+      }
+      .footer {
+        padding-top: 80px;
+        padding-bottom: 40px;
+      }
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 60px;
+      }
+      .footer-column ul {
+        list-style: none;
+      }
+      .footer-column ul li {
+        margin-bottom: 12px;
+      }
+      .footer-column ul a {
+        text-decoration: none;
+        color: var(--text-dark-bg-secondary);
+        transition: color var(--transition-fast);
+      }
+      .footer-column ul a:hover {
+        color: var(--accent);
+      }
+      .footer-bottom {
+        border-top: 1px solid var(--border-dark);
+        padding-top: 30px;
+        text-align: center;
+        font-size: 0.9rem;
+      }
+
+      /* ------------------------- */
+      /* --- ANIMATIONS & FX ----- */
+      /* ------------------------- */
+      .fade-in-up {
+        opacity: 0;
+        transform: translateY(30px);
+        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      }
+      .fade-in-up.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      .stagger-children > * {
+        transition-delay: calc(0.08s * var(--i));
+      }
+
+      .aurora-background {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+      }
+      .aurora-background::before {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        width: 1400px;
+        height: 1400px;
+        transform: translate(-50%, -50%);
+        background-image: radial-gradient(
+            circle,
+            rgba(59, 130, 246, 0.1) 0%,
+            transparent 40%
+          ),
+          radial-gradient(circle, rgba(236, 72, 153, 0.1) 60%, transparent 100%);
+        animation: aurora 20s linear infinite;
+      }
+      @keyframes aurora {
+        from {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        to {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
+      }
+
+      /* ------------------------- */
+      /* --- RESPONSIVE STYLES --- */
+      /* ------------------------- */
+      @media (max-width: 992px) {
+        .feature-item,
+        .feature-item:nth-child(even) {
+          grid-template-columns: 1fr;
+          gap: 48px;
+          text-align: center;
+        }
+        .feature-item:nth-child(even) .feature-image {
+          grid-column: auto;
+          grid-row: auto;
+        }
+        .services-bento-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .process-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        section {
+          padding: 80px 0;
+        }
+        h1 {
+          font-size: 2.75rem;
+        }
+        h2 {
+          font-size: 2rem;
+        }
+
+        .menu-toggle {
+          display: block;
+          background: none;
+          border: none;
+          cursor: pointer;
+          z-index: 1001;
+        }
+        .menu-toggle .icon-bar {
+          display: block;
+          width: 25px;
+          height: 2px;
+          background-color: var(--text-light-bg);
+          margin: 6px 0;
+          transition: all var(--transition-medium);
+        }
+        .menu-toggle.active .icon-bar:nth-child(1) {
+          transform: translateY(8px) rotate(45deg);
+        }
+        .menu-toggle.active .icon-bar:nth-child(2) {
+          opacity: 0;
+        }
+        .menu-toggle.active .icon-bar:nth-child(3) {
+          transform: translateY(-8px) rotate(-45deg);
+        }
+
+        .nav-links {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: var(--card-light);
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          gap: 40px;
+          transform: translateX(100%);
+          transition: transform 0.4s ease-in-out;
+        }
+        .nav-links.active {
+          transform: translateX(0);
+        }
+        .nav-links a {
+          font-size: 1.25rem;
+          color: var(--text-light-bg);
+        }
+
+        .hero-content p {
+          font-size: 1.125rem;
+        }
+        .hero-ctas {
+          flex-direction: column;
+          align-items: center;
+        }
+        .hero-ctas .btn {
+          width: 100%;
+          max-width: 350px;
+        }
+
+        .services-bento-grid {
+          grid-template-columns: 1fr;
+          grid-auto-rows: minmax(180px, auto);
+        }
+        .service-card:nth-child(1),
+        .service-card:nth-child(2),
+        .service-card:nth-child(6) {
+          grid-column: span 1;
+          grid-row: span 1;
+        }
+        .process-grid {
+          grid-template-columns: 1fr;
+        }
+        .testimonial-slide p.quote {
+          font-size: 1.5rem;
+        }
+        .footer-grid {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header" id="main-header">
+      <div class="container">
+        <nav class="navbar">
+          <a href="#hero" class="logo">Softency</a>
+          <ul class="nav-links" id="nav-links">
+            <li><a href="#services">Capabilities</a></li>
+            <li><a href="#differentiator">Why Us</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#cta" class="btn btn-primary">Contact</a></li>
+          </ul>
+          <button
+            class="menu-toggle"
+            id="menu-toggle"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+          >
+            <span class="icon-bar"></span><span class="icon-bar"></span
+            ><span class="icon-bar"></span>
+          </button>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      <section id="hero" class="light-section">
+        <div class="container">
+          <div class="hero-content fade-in-up">
+            <h1>We Build High-Performance Web Engines That Drive Revenue</h1>
+            <p>
+              We unite expert software engineering with precision marketing to
+              build powerful, predictable growth engines for ambitious SaaS
+              startups and tech companies.
+            </p>
+            <div class="hero-ctas">
+              <a href="#cta" class="btn btn-primary"
+                >Get Free Audit
+                <svg
+                  width="20"
+                  height="20"
+                  viewBox="0 0 20 20"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4.16669 10H15.8334M15.8334 10L10 4.16669M15.8334 10L10 15.8334"
+                    stroke="white"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  /></svg
+              ></a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="services" class="dark-section">
+        <div class="aurora-background"></div>
+        <div class="container">
+          <div class="section-heading fade-in-up">
+            <h2>Your End-to-End Growth Partner</h2>
+            <p>
+              From foundational technology to strategic marketing, we offer the
+              complete suite of services to build and grow your brand online.
+            </p>
+          </div>
+          <div class="services-bento-grid stagger-children">
+            <div
+              class="service-card fade-in-up interactive-card"
+              style="--i: 1"
+            >
+              <div class="icon">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M7 8L3 12L7 16"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17 8L21 12L17 16"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14 4L10 20"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4>Website Design & Development</h4>
+                <p>
+                  High-performance sites that serve as the cornerstone of your
+                  revenue growth.
+                </p>
+              </div>
+            </div>
+            <div
+              class="service-card fade-in-up interactive-card"
+              style="--i: 2"
+            >
+              <div class="icon">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                  <path d="M3.5498 9.5H20.4498" />
+                  <path d="M3.5498 14.5H20.4498" />
+                  <path
+                    d="M10.25 21C11.383 18.841 12.617 16.159 13.75 14M13.75 10C12.617 7.841 11.383 5.159 10.25 3"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4>360° Digital Marketing</h4>
+                <p>
+                  Data-driven strategy covering SEO, PPC, and analytics to drive
+                  conversions.
+                </p>
+              </div>
+            </div>
+            <div
+              class="service-card fade-in-up interactive-card"
+              style="--i: 3"
+            >
+              <div class="icon">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M20 7L16 3M16 3L12 7M16 3V15.5C16 16.0304 15.7893 16.5391 15.4142 16.9142C15.0391 17.2893 14.5304 17.5 14 17.5H4C3.46957 17.5 2.96086 17.2893 2.58579 16.9142C2.21071 16.5391 2 16.0304 2 15.5V11.5M4 21L8 17.5"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4>UX & UI</h4>
+                <p>
+                  Intuitive, engaging interfaces that achieve critical business
+                  goals.
+                </p>
+              </div>
+            </div>
+            <div
+              class="service-card fade-in-up interactive-card"
+              style="--i: 4"
+            >
+              <div class="icon">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M16.5 12L9.5 8V16L16.5 12Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <rect
+                    x="3"
+                    y="5"
+                    width="18"
+                    height="14"
+                    rx="2"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4>Video Editing</h4>
+                <p>
+                  Professional post-production to make your brand's story
+                  compelling.
+                </p>
+              </div>
+            </div>
+            <div
+              class="service-card fade-in-up interactive-card"
+              style="--i: 5"
+            >
+              <div class="icon">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M14 3V7C14 7.26522 14.1054 7.51957 14.2929 7.70711C14.4804 7.89464 14.7348 8 15 8H19"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M17 21H7C5.89543 21 5 20.1046 5 19V5C5 3.89543 5.89543 3 7 3H14L19 8V19C19 20.1046 18.1046 21 17 21Z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M9 13H15"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M9 17H12"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4>Content Writing</h4>
+                <p>
+                  Persuasive, SEO-friendly copy that resonates with your target
+                  audience.
+                </p>
+              </div>
+            </div>
+            <div
+              class="service-card fade-in-up interactive-card"
+              style="--i: 6"
+            >
+              <div class="icon">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.72"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                  <path
+                    d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.72-1.72"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4>Backlink Services</h4>
+                <p>
+                  Building high-quality backlinks to establish authority and
+                  boost rankings.
+                </p>
+              </div>
+            </div>
+            <div
+              class="service-card fade-in-up interactive-card"
+              style="--i: 7"
+            >
+              <div class="icon">
+                <svg
+                  width="32"
+                  height="32"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                >
+                  <path
+                    d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4>Social Media Marketing</h4>
+                <p>
+                  Engaging your audience and building a strong community around
+                  your brand.
+                </p>
+              </div>
+            </div>
+            <div
+              class="service-card fade-in-up interactive-card"
+              style="--i: 8"
+            >
+              <div class="icon">
+                <svg
+                  width="32"
+                  height="32"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </div>
+              <div>
+                <h4>Graphic Design</h4>
+                <p>
+                  Creating stunning visuals that define and elevate your brand
+                  identity.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="differentiator" class="light-section">
+        <div class="container">
+          <div class="feature-item fade-in-up">
+            <div class="feature-text">
+              <h2>Insight, Not Instincts</h2>
+              <p>
+                We don't guess. Every campaign and feature is backed by rigorous
+                data analysis. We track, analyze, and optimize every step to
+                deliver tangible, predictable results and maximize your ROI.
+              </p>
+            </div>
+            <div class="feature-image">
+              <img
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop"
+                alt="A clean dashboard showing data analytics and charts."
+              />
+            </div>
+          </div>
+          <div class="feature-item fade-in-up">
+            <div class="feature-text">
+              <h2>One Team, One Goal</h2>
+              <p>
+                Our developers and marketers work in unison from day one. This
+                unique synergy ensures your technology is built for marketing
+                success, and your campaigns are enhanced by powerful,
+                custom-built tools.
+              </p>
+            </div>
+            <div class="feature-image">
+              <img
+                src="https://images.unsplash.com/photo-1542744095-291d1f67b221?q=80&w=1200&auto=format&fit=crop"
+                alt="A diverse team collaborating in a modern office."
+              />
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="process" class="dark-section">
+        <div class="container">
+          <div class="section-heading fade-in-up">
+            <h2>Our Blueprint for Your Success</h2>
+            <p>
+              We follow a proven, transparent process to ensure your project is
+              a success from initial concept to final launch and beyond.
+            </p>
+          </div>
+          <div class="process-grid stagger-children">
+            <div class="process-card fade-in-up" style="--i: 1">
+              <div class="process-number">01</div>
+              <h3>Discovery & Strategy</h3>
+              <p>
+                We start by understanding your vision, audience, and goals to
+                create a tailored roadmap.
+              </p>
+            </div>
+            <div class="process-card fade-in-up" style="--i: 2">
+              <div class="process-number">02</div>
+              <h3>Design & UX</h3>
+              <p>
+                Our team designs a pixel-perfect, user-centric interface that is
+                both beautiful and functional.
+              </p>
+            </div>
+            <div class="process-card fade-in-up" style="--i: 3">
+              <div class="process-number">03</div>
+              <h3>Development & Launch</h3>
+              <p>
+                We bring designs to life with clean code, rigorous testing, and
+                a seamless deployment process.
+              </p>
+            </div>
+            <div class="process-card fade-in-up" style="--i: 4">
+              <div class="process-number">04</div>
+              <h3>Growth & Marketing</h3>
+              <p>
+                After launch, we implement targeted strategies to attract users
+                and drive measurable growth.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="testimonials" class="light-section">
+        <div class="container">
+          <div class="section-heading fade-in-up">
+            <h2>Trusted by Ambitious Founders</h2>
+            <p>
+              Don't just take our word for it. Here's what our partners have to
+              say about the impact we've made.
+            </p>
+          </div>
+          <div class="testimonial-slider fade-in-up">
+            <div class="testimonial-slides">
+              <div class="testimonial-slide active">
+                <p class="quote">
+                  "Softency's development work was fast, professional, and
+                  exceeded all our expectations. They are a true strategic
+                  partner, not just a contractor."
+                </p>
+                <p class="testimonial-author">
+                  Founder's Name<span>Founder, Softency Marketing</span>
+                </p>
+              </div>
+              <div class="testimonial-slide">
+                <p class="quote">
+                  "The new website they built for us is not only beautiful but
+                  also incredibly fast. We've seen a measurable increase in
+                  leads since the launch."
+                </p>
+                <p class="testimonial-author">
+                  Jane Doe<span>CEO, Tech Startup</span>
+                </p>
+              </div>
+              <div class="testimonial-slide">
+                <p class="quote">
+                  "Working with them was a game-changer. Their data-driven
+                  approach gave us the clarity we needed to scale our marketing
+                  efforts effectively."
+                </p>
+                <p class="testimonial-author">
+                  John Smith<span>Marketing Director, SaaS Co.</span>
+                </p>
+              </div>
+            </div>
+            <div class="testimonial-nav">
+              <button id="testimonial-prev" aria-label="Previous testimonial">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M15 18L9 12L15 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+              <button id="testimonial-next" aria-label="Next testimonial">
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M9 18L15 12L9 6"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="cta" class="dark-section">
+        <div class="container">
+          <div class="cta-content fade-in-up">
+            <h2>Ready to Outperform The Competition?</h2>
+            <p>
+              Let's talk. Schedule a free consultation, and we'll send you a
+              personalized video audit outlining the clear, actionable path to
+              achieving your most ambitious business goals.
+            </p>
+            <a href="mailto:hello@softency.com" class="btn btn-primary"
+              >Get Your Free Performance Audit
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4.16669 10H15.8334M15.8334 10L10 4.16669M15.8334 10L10 15.8334"
+                  stroke="white"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                /></svg
+            ></a>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer dark-section">
+      <div class="container">
+        <div class="footer-grid">
+          <div class="footer-column footer-logo-column">
+            <h4>Softency</h4>
+            <p>Engineering Your Digital Growth.</p>
+          </div>
+          <div class="footer-column">
+            <h4>Services</h4>
+            <ul>
+              <li><a href="#services">Web Development</a></li>
+              <li><a href="#services">Digital Marketing</a></li>
+              <li><a href="#services">UX & UI Design</a></li>
+              <li><a href="#services">Content & SEO</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="#">About Us</a></li>
+              <li><a href="#process">Our Process</a></li>
+              <li><a href="#">Blog</a></li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <h4>Contact</h4>
+            <ul>
+              <li>
+                <a href="mailto:hello@softency.com">hello@softency.com</a>
+              </li>
+              <li><a href="tel:555-123-4567">(555) 123-4567</a></li>
+            </ul>
+          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 Softency. All Rights Reserved.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // --- HERO TEXT CHARACTER ANIMATION ---
+        const heroHeading = document.querySelector("#hero h1");
+        if (heroHeading) {
+          const text = heroHeading.textContent;
+          const chars = text
+            .split("")
+            .map(
+              (char) =>
+                `<span class="char">${char === " " ? "&nbsp;" : char}</span>`
+            )
+            .join("");
+          heroHeading.innerHTML = chars;
+
+          setTimeout(() => {
+            const heroContent = document.querySelector(".hero-content");
+            heroContent.classList.add("visible");
+            const charElements = heroContent.querySelectorAll(".char");
+            charElements.forEach((char, index) => {
+              char.style.transitionDelay = `${index * 0.02}s`;
+            });
+          }, 100);
+        }
+
+        // --- INTERSECTION OBSERVER FOR SCROLL ANIMATIONS ---
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.classList.add("visible");
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+        document
+          .querySelectorAll(".fade-in-up")
+          .forEach((el) => observer.observe(el));
+
+        // --- MOBILE MENU TOGGLE ---
+        const menuToggle = document.getElementById("menu-toggle");
+        const navLinks = document.getElementById("nav-links");
+        if (menuToggle && navLinks) {
+          const toggleMenu = () => {
+            const isActive = navLinks.classList.toggle("active");
+            menuToggle.classList.toggle("active");
+            menuToggle.setAttribute("aria-expanded", isActive);
+            document.body.style.overflow = isActive ? "hidden" : "";
+          };
+          menuToggle.addEventListener("click", toggleMenu);
+          navLinks.querySelectorAll("a").forEach((link) =>
+            link.addEventListener("click", () => {
+              if (navLinks.classList.contains("active")) toggleMenu();
+            })
+          );
+        }
+
+        // --- TESTIMONIAL SLIDER ---
+        const slides = document.querySelectorAll(".testimonial-slide");
+        if (slides.length > 0) {
+          const nextBtn = document.getElementById("testimonial-next");
+          const prevBtn = document.getElementById("testimonial-prev");
+          let currentSlide = 0;
+          const showSlide = (n) => {
+            slides.forEach((slide, index) =>
+              slide.classList.toggle("active", index === n)
+            );
+          };
+          nextBtn.addEventListener("click", () => {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+          });
+          prevBtn.addEventListener("click", () => {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+          });
+          showSlide(currentSlide);
+        }
+
+        // --- INTERACTIVE CARD GLOW EFFECT ---
+        const interactiveCards = document.querySelectorAll(".interactive-card");
+        interactiveCards.forEach((card) => {
+          card.addEventListener("mousemove", (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            card.style.setProperty("--mouse-x", `${x}px`);
+            card.style.setProperty("--mouse-y", `${y}px`);
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
